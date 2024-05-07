@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = Vector()
         self.speed = 200
 
-        self.hitbox = self.rect.inflate(0, -self.rect.height / 2)
+        self.hitbox = self.rect.inflate(-self.rect.width * 0.6, -self.rect.height / 2)
         self.collision_sprite = collision_sprites
 
         self.attacking = False
@@ -77,10 +77,12 @@ class Player(pygame.sprite.Sprite):
         self.pos.x += self.direction.x * self.speed * dt
         self.hitbox.centerx = round(self.pos.x)
         self.rect.centerx = self.hitbox.centerx
+        self.collision('horizontal')
 
         self.pos.y += self.direction.y * self.speed * dt
         self.hitbox.centery = round(self.pos.y)
         self.rect.centery = self.hitbox.centery
+        self.collision('vertical')
 
     def animate(self, dt):
         current_animation = self.animation[self.status]
@@ -92,6 +94,30 @@ class Player(pygame.sprite.Sprite):
             if self.attacking:
                 self.attacking = False
         self.image = current_animation[int(self.frame_index)]
+
+    def collision(self, direction):
+        for sprite in self.collision_sprite.sprites():
+            if sprite.hitbox.colliderect(self.hitbox):
+                if direction == 'horizontal':
+                    if self.direction.x > 0:
+                        self.hitbox.right = sprite.hitbox.left
+                        self.rect.centerx = self.hitbox.centerx
+                        self.pos.x = self.hitbox.centerx
+
+                    if self.direction.x < 0:
+                        self.hitbox.left = sprite.hitbox.right
+                        self.rect.centerx = self.hitbox.centerx
+                        self.pos.x = self.hitbox.centerx
+                else:
+                    if self.direction.y > 0:
+                        self.hitbox.bottom = sprite.hitbox.top
+                        self.rect.centery = self.hitbox.centery
+                        self.pos.y = self.hitbox.centery
+
+                    if self.direction.y < 0:
+                        self.hitbox.top = sprite.hitbox.bottom
+                        self.rect.centery = self.hitbox.centery
+                        self.pos.y = self.hitbox.centery
 
     def update(self, dt):
         self.input()
