@@ -4,7 +4,7 @@ from os import walk
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, path, collision_sprites):
+    def __init__(self, pos, path, collision_sprites, create_bullet, groups):
         super().__init__(groups)
         self.import_assets(path)
         self.frame_index = 0
@@ -21,6 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.collision_sprite = collision_sprites
 
         self.attacking = False
+        self.create_bullet = create_bullet
 
     def get_status(self):
         if self.direction.x == 0 and self.direction.y == 0:
@@ -69,6 +70,7 @@ class Player(pygame.sprite.Sprite):
                 self.attacking = True
                 self.direction = Vector()
                 self.frame_index = 0
+                self.create_bullet(self.rect.center, Vector(1, 0))
 
     def move(self, dt):
         if self.direction.magnitude() != 0:
