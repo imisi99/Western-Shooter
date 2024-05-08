@@ -5,6 +5,7 @@ from player import Player
 from pytmx.util_pygame import load_pygame
 from sprite import Sprite, Bullet
 from pygame.math import Vector2 as Vector
+from enemies import Coffin, Cactus
 
 
 class AllSprites(pygame.sprite.Group):
@@ -19,7 +20,7 @@ class AllSprites(pygame.sprite.Group):
         self.offset.y = player.rect.centery - WINDOW_HEIGHT / 2
 
         self.display_surface.blit(self.bg, -self.offset)
-        for sprite in sorted(self.sprites(), key=lambda sprite : sprite.rect.centery):
+        for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
             offset_rect = sprite.image.get_rect(center=sprite.rect.center)
             offset_rect.center -= self.offset
             self.display_surface.blit(sprite.image, offset_rect)
@@ -37,7 +38,6 @@ class Begin:
 
         self.obstacle = pygame.sprite.Group()
         self.bullet = pygame.sprite.Group()
-
         self.setup()
 
     def create_bullet(self, pos, direction):
@@ -59,6 +59,24 @@ class Begin:
                     collision_sprites=self.obstacle,
                     create_bullet=self.create_bullet,
                     groups=self.all_sprites)
+
+            if obj.name == 'Coffin':
+                Coffin(
+                    pos=(obj.x, obj.y),
+                    path=PATHS['coffin'],
+                    collision_sprites=self.obstacle,
+                    player=self.player,
+                    groups=self.all_sprites
+                )
+
+            if obj.name == 'Cactus':
+                Cactus(
+                    pos=(obj.x, obj.y),
+                    path=PATHS['cactus'],
+                    collision_sprites=self.obstacle,
+                    player=self.player,
+                    groups=self.all_sprites
+                )
 
     def run(self):
         while True:
