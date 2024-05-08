@@ -38,10 +38,29 @@ class Begin:
 
         self.obstacle = pygame.sprite.Group()
         self.bullet = pygame.sprite.Group()
+        self.monster = pygame.sprite.Group()
         self.setup()
+        self.music = pygame.mixer.Sound('../sound/music.mp3')
+        self.music.set_volume(0.3)
+        self.music.play(-1)
 
     def create_bullet(self, pos, direction):
         Bullet(pos, self.bullet_surf, direction, [self.all_sprites, self.bullet])
+
+    def bullet_collision(self):
+
+        for bullet in self.bullet.sprites():
+            collision = pygame.sprite.spritecollide(bullet, self.monster, False, pygame.sprite.collide_mask)
+            if collision:
+                bullet.kill()
+                for sprite in collision:
+                    sprite.damage()
+
+        for obstacle in self.obstacle.sprites():
+            pygame.sprite.spritecollide(obstacle, self.bullet, True, pygame.sprite.collide_mask)
+
+        if pygame.sprite.spritecollide(self.player, self.bullet, True, pygame.sprite.collide_mask):
+            self.player.damage()
 
     def setup(self):
         tmx_map = load_pygame('../data/map.tmx')
@@ -66,7 +85,7 @@ class Begin:
                     path=PATHS['coffin'],
                     collision_sprites=self.obstacle,
                     player=self.player,
-                    groups=self.all_sprites
+                    groups=[self.all_sprites, self.monster]
                 )
 
             if obj.name == 'Cactus':
@@ -75,7 +94,8 @@ class Begin:
                     path=PATHS['cactus'],
                     collision_sprites=self.obstacle,
                     player=self.player,
-                    groups=self.all_sprites
+                    create_bullet= self.create_bullet,
+                    groups=[self.all_sprites, self.monster]
                 )
 
     def run(self):
@@ -88,6 +108,8 @@ class Begin:
             dt = self.clock.tick(120) / 1000
 
             self.all_sprites.update(dt)
+
+            self.bullet_collision()
 
             self.display_surface.fill('black')
 

@@ -62,18 +62,22 @@ class Player(Entity):
         self.frame_index += 8 * dt
 
         if int(self.frame_index) == 0 and self.attacking and not self.bullet_shot:
-            self.bullet_pos = self.rect.center + self.bullet_direction * 40
+            self.bullet_pos = self.rect.center + self.bullet_direction * 80
             self.create_bullet(self.bullet_pos, self.bullet_direction)
             self.bullet_shot = True
+            self.shoot_sound.play()
 
         if self.frame_index >= len(current_animation):
             self.frame_index = 0
             if self.attacking:
                 self.attacking = False
         self.image = current_animation[int(self.frame_index)]
+        self.mask = pygame.mask.from_surface(self.image)
 
     def update(self, dt):
         self.input()
         self.move(dt)
         self.animate(dt)
         self.get_status()
+        self.timer()
+        self.blink()
