@@ -120,6 +120,8 @@ class Begin:
                     pygame.quit()
                     sys.exit()
 
+            self.time = pygame.time.get_ticks() / 1000
+
             dt = self.clock.tick(120) / 1000
 
             if self.player.health >= 0 and len(self.monster):
@@ -133,6 +135,14 @@ class Begin:
 
                 self.life_display()
                 self.monster_left()
+
+                if self.time < 7:
+                    text = 'Press scpacebar to shoot and arrows to navigate'
+                    display = self.font.render(text, True, 'red')
+                    display_rect = display.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 600))
+                    pygame.draw.rect(self.display_surface, 'green', display_rect.inflate(30, 30), width=5,
+                                     border_radius=10)
+                    self.display_surface.blit(display, display_rect)
 
             if self.player.health < 0:
                 text = 'You died Press P to play again or Q to quit'
