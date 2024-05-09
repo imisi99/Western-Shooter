@@ -1,7 +1,7 @@
 # Western-Shooter
 This is an objective game built using pygame and pyinstaller.  
 The game needs requires the player to kill all the monsters on the map while avoiding being killed    
-The project can be cloned [here]()    
+The project can be cloned [here](https://github.com/imisi99/Western-Shooter)    
 What the game entails:
  - The game can be played by using the keyboard buttons
  - Players can move the avatar anywhere on the screen to avoid the enemies that can attack in different ways:
@@ -18,7 +18,7 @@ What the game entails:
  - If a player successfully reaches the ending of the game, That is if the player successfully defeats all the enemy he can decide to play again by pressing p.
  - There is a guide on how to play the game displayed on the screen for a brief second in the beginning of the game 
 
-The game has been made into an executable file using pyinstaller therefore there is no need for any package installation to run the game, It can be downloaded [here]()    
+The game has been made into an executable file using pyinstaller therefore there is no need for any package installation to run the game, It can be downloaded [here](https://github.com/imisi99/Western-Shooter/blob/main/western_shooter.zip)    
 This is the installation Process:
  - After downloading the zip folder extract it to a folder. 
  - After extraction navigate to the app folder and you would find an executable file cowboy.
