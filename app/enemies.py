@@ -94,8 +94,9 @@ class Cactus(Entity, Monster):
         self.speed = 80
         self.player = player
         self.notice_radius = 500
-        self.walk_radius = 400
-        self.attack_radius = 300
+        self.walk_radius = 500
+        self.attack_radius = 400
+        self.health = 4
 
         self.create_bullet = create_bullet
         self.bullet_shot = False

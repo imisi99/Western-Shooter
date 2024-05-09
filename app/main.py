@@ -40,6 +40,7 @@ class Begin:
         self.bullet = pygame.sprite.Group()
         self.monster = pygame.sprite.Group()
         self.setup()
+        self.font = pygame.font.Font('../graphics/subatomic.ttf', 25)
         self.music = pygame.mixer.Sound('../sound/music.mp3')
         self.music.set_volume(0.3)
         self.music.play(-1)
@@ -61,6 +62,20 @@ class Begin:
 
         if pygame.sprite.spritecollide(self.player, self.bullet, True, pygame.sprite.collide_mask):
             self.player.damage()
+
+    def life_display(self):
+        text = f'LIFE: {self.player.health}'
+        life = self.font.render(text, True, 'red')
+        life_rect = life.get_rect(center=(WINDOW_WIDTH - 80, 35))
+        pygame.draw.rect(self.display_surface, 'green', life_rect.inflate(30, 30), width=5, border_radius=10)
+        self.display_surface.blit(life, life_rect)
+
+    def monster_left(self):
+        text = f'Monsters: {len(self.monster)}'
+        display = self.font.render(text, True, 'green')
+        display_rect = display.get_rect(center=((WINDOW_WIDTH - (WINDOW_WIDTH-120)), 35))
+        pygame.draw.rect(self.display_surface, 'red', display_rect.inflate(30, 30), width=5, border_radius=10)
+        self.display_surface.blit(display, display_rect)
 
     def setup(self):
         tmx_map = load_pygame('../data/map.tmx')
@@ -107,14 +122,31 @@ class Begin:
 
             dt = self.clock.tick(120) / 1000
 
-            self.all_sprites.update(dt)
+            if self.player.health >= 0 and len(self.monster):
+                self.all_sprites.update(dt)
 
-            self.bullet_collision()
+                self.bullet_collision()
 
-            self.display_surface.fill('black')
+                self.display_surface.fill('black')
 
-            self.all_sprites.customize_draw(self.player)
+                self.all_sprites.customize_draw(self.player)
 
+                self.life_display()
+                self.monster_left()
+
+            if self.player.health < 0:
+                text = 'You died Press P to play again or Q to quit'
+                display = self.font.render(text, True, 'red')
+                display_rect = display.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+                pygame.draw.rect(self.display_surface, 'green', display_rect.inflate(30, 30), width=5, border_radius=10)
+                self.display_surface.blit(display, display_rect)
+
+            if not len(self.monster):
+                text = 'You Won Press P to play again or Q to quit'
+                display = self.font.render(text, True, 'green')
+                display_rect = display.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+                pygame.draw.rect(self.display_surface, 'red', display_rect.inflate(30, 30), width=5, border_radius=10)
+                self.display_surface.blit(display, display_rect)
             pygame.display.update()
 
 

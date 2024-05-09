@@ -1,6 +1,7 @@
 import pygame
 from pygame.math import Vector2 as Vector
 from entity import Entity
+from settings import *
 
 
 class Player(Entity):
@@ -10,6 +11,7 @@ class Player(Entity):
         self.bullet_pos = 0
         self.create_bullet = create_bullet
         self.bullet_shot = False
+        self.health = 100
 
     def get_status(self):
         if self.direction.x == 0 and self.direction.y == 0:
