@@ -140,13 +140,38 @@ class Begin:
                 display_rect = display.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
                 pygame.draw.rect(self.display_surface, 'green', display_rect.inflate(30, 30), width=5, border_radius=10)
                 self.display_surface.blit(display, display_rect)
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_p]:
+                    self.all_sprites.empty()
+                    self.obstacle.empty()
+                    self.bullet.empty()
+                    self.monster.empty()
+                    self.setup()
+
+                if keys[pygame.K_q]:
+                    pygame.quit()
+                    sys.exit()
 
             if not len(self.monster):
+                self.player.kill()
                 text = 'You Won Press P to play again or Q to quit'
                 display = self.font.render(text, True, 'green')
                 display_rect = display.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
                 pygame.draw.rect(self.display_surface, 'red', display_rect.inflate(30, 30), width=5, border_radius=10)
                 self.display_surface.blit(display, display_rect)
+                keys = pygame.key.get_pressed()
+
+                if keys[pygame.K_p]:
+                    self.all_sprites.empty()
+                    self.obstacle.empty()
+                    self.bullet.empty()
+                    self.monster.empty()
+                    self.setup()
+
+                if keys[pygame.K_q]:
+                    pygame.quit()
+                    sys.exit()
+
             pygame.display.update()
 
 

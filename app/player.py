@@ -11,7 +11,7 @@ class Player(Entity):
         self.bullet_pos = 0
         self.create_bullet = create_bullet
         self.bullet_shot = False
-        self.health = 100
+        self.health = 5
 
     def get_status(self):
         if self.direction.x == 0 and self.direction.y == 0:
